@@ -36,6 +36,12 @@ namespace NotificationsService.Models
             TeamName = notification.TeamName;
         }
 
+        private void Apply(UserUpdatedEmail userUpdatedEmail)
+        {
+            Email = userUpdatedEmail.NewEmail;
+        }
+
+
         public void Apply(Event @event) 
         {
             switch(@event)
@@ -48,6 +54,9 @@ namespace NotificationsService.Models
                     break;
                 case UserLeftTeamNotification userLeftTeamNotification:
                     Apply(userLeftTeamNotification);
+                    break;
+                case UserUpdatedEmail userUpdatedEmail:
+                    Apply(userUpdatedEmail);
                     break;
             }
         }
