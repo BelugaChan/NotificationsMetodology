@@ -15,10 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="RabbitMqListener">
       <HintPath>..\LogServiceMetodology\DLL\RabbitMqListener.dll</HintPath>
     </Reference>
