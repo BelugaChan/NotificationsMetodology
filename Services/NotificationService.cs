@@ -9,10 +9,12 @@ namespace NotificationsService.Services
 {
     public class NotificationService : INotificationService
     {
+        private readonly IUserBioCommandService userBioCommandService;
         private readonly INotificationCommandsService commandService;
         private readonly IHubContext<NotificationHub> hubContext;
-        public NotificationService(INotificationCommandsService commandService,IHubContext<NotificationHub> hubContext)
+        public NotificationService(IUserBioCommandService userBioCommandService, INotificationCommandsService commandService,IHubContext<NotificationHub> hubContext)
         {
+            this.userBioCommandService = userBioCommandService;
             this.commandService = commandService;
             this.hubContext = hubContext;
         }
@@ -53,7 +55,14 @@ namespace NotificationsService.Services
                     await hubContext.Clients.User(userLeft.UserId.ToString())
                        .SendAsync("ReceiveNotification", userLeft.NotificationMessage);
                     break;
-
+                case RabbitMqUserUpdateEmailNotificationRecieve updateEmailNotificationMessage:
+                    var userUpdatedEmail = new UserUpdatedEmail
+                    {
+                        UserId = updateEmailNotificationMessage.UserId,
+                        NewEmail = updateEmailNotificationMessage.NewEmail,
+                    };
+                    await userBioCommandService.AppendEventAsync(userUpdatedEmail);
+                    break;
             }
         }
     }
