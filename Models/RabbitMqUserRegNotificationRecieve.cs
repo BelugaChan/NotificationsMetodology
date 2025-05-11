@@ -2,10 +2,12 @@
 
 namespace NotificationsService.Models
 {
-    public class RabbitMqUserRegNotificationRecieve
+    public class RabbitMqUserRegNotificationRecieve : IEvent
     {
         public Guid UserId { get; set; }
 
         public string Email { get; set; }
+
+        public string EventType => "UserReg";
     }
 }
