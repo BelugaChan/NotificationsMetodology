@@ -22,13 +22,15 @@ namespace NotificationsService
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+           
             builder.Services.Configure<DynamoDbOptions>(builder.Configuration.GetSection(nameof(DynamoDbOptions)));
             builder.Services.Configure<JWTOptions>(builder.Configuration.GetSection(nameof(JWTOptions)));
 
             builder.Services.AddSingleton<IDynamoDbConfigure, DynamoDbConfigure>();
-            builder.Services.AddScoped<INotificationsDatabase, NotificationsDatabase>();
             builder.Services.AddScoped<INotificationService, NotificationService>();
+            builder.Services.AddScoped<INotificationCommandsService, NotificationCommandService>();
+            builder.Services.AddScoped<IUserBioCommandService, UserBioCommandService>();
+            builder.Services.AddScoped<INotificationQueryService, NotificationQueryService>();
             builder.Services.AddHostedService<RabbitMqUserNotificationListener>()
                 .AddSingleton<IRabbitMqListenerBase, RabbitMqUserNotificationListener>();
 
